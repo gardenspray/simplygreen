@@ -1,330 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simply Green and Garden Spray</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner shell">
-      <a href="#home" class="logo-wrap" aria-label="Go to home">
-        <img src="logo.JPG" alt="Simply Green and Garden Spray logo" class="logo" />
-      </a>
 
-      <nav class="desktop-nav">
-        <a href="#home" class="nav-link">Home</a>
-        <a href="#services" class="nav-link">Services</a>
-        <a href="#reviews" class="nav-link">Reviews</a>
-      </nav>
+<div id="site-wrapper">
 
-      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false" aria-controls="mobileMenu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-
-    <div class="header-line"></div>
+  <!-- ═══ HEADER ═══════════════════════════════════════ -->
+  <header id="top">
+    <a href="#top" class="logo">
+      <img src="logo.JPG" alt="Simply Green and Garden Spray" class="logo-img">
+    </a>
+    <button id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="#hero">Home</a>
+      <a href="#programs">Services</a>
+      <a href="#reviews">Reviews</a>
+    </nav>
   </header>
 
-  <div class="menu-overlay" id="menuOverlay" hidden>
-    <div class="menu-panel shell" id="mobileMenu">
-      <button class="overlay-close" id="menuClose" aria-label="Close navigation">×</button>
-      <a href="#home" class="overlay-link">Home</a>
-      <a href="#services" class="overlay-link">Services</a>
-      <a href="#reviews" class="overlay-link">Reviews</a>
+  <!-- ═══ MOBILE MENU ══════════════════════════════════ -->
+  <nav id="mobile-menu" aria-label="Mobile navigation">
+    <a href="#hero"     class="menu-link">Home</a>
+    <a href="#programs" class="menu-link">Services</a>
+    <a href="#reviews"  class="menu-link">Reviews</a>
+  </nav>
+
+  <!-- ═══ HERO ═════════════════════════════════════════ -->
+  <section id="hero">
+    <h1 class="hero-heading">
+      Putting the<br>
+      &ldquo;<span class="green">care</span>&rdquo; in<br>
+      <span class="green">lawn care</span>
+    </h1>
+
+    <div class="stars-display">
+      <div class="star-row" id="hero-stars"></div>
+      <span class="rating-num" id="hero-rating-num"></span>
+      <span class="review-count" id="hero-review-count"></span>
     </div>
-  </div>
 
-  <main id="home" class="page-shell">
-    <section class="hero section">
-      <h1 class="hero-title">
-        Putting the<br>
-        "<span class="green">care</span>" in<br>
-        <span class="green">lawn care</span>
-      </h1>
+    <a class="review-link" id="open-review-modal" role="button" tabindex="0">
+      Leave your review &rarr;
+    </a>
+  </section>
 
-      <div class="stars" aria-label="4 out of 5 stars">★ ★ ★ ★ ☆</div>
+  <!-- ═══ PROGRAMS ═════════════════════════════════════ -->
+  <section id="programs">
+    <div class="section-title">Services offered</div>
+    <div class="section-sub">Programs</div>
 
-      <button class="text-link button-reset" id="openReviewModalTop">Leave your review →</button>
-    </section>
+    <div class="carousel-track-wrap">
+      <div class="carousel-track" id="programs-track">
 
-    <section id="services" class="section">
-      <h2 class="section-title">Services offered</h2>
-      <p class="section-subtitle">Programs</p>
-
-      <div class="carousel programs-carousel" id="programCarousel">
-        <div class="carousel-track">
-          <article class="program-card carousel-slide">
-            <h3>PROGRAM 1</h3>
-            <ul>
-              <li>Spring fertilizer</li>
-              <li>Summer fertilizer</li>
-              <li>Fall/Winter fertilizer</li>
-              <li>Fiesta weed control x3</li>
-            </ul>
-            <p class="program-meta">4 visits in 6 applications</p>
-            <p class="program-note">low commitment option</p>
-          </article>
-
-          <article class="program-card carousel-slide highlighted">
-            <div class="pill">MOST COMMON</div>
-            <h3>PROGRAM 2</h3>
-            <ul>
-              <li>Spring fertilizer</li>
-              <li>Early Summer fertilizer</li>
-              <li>Late Summer fertilizer</li>
-              <li>Fall/Winter fertilizer</li>
-              <li>Season long:</li>
-              <li>Fiesta weed control</li>
-              <li>Infestation checkups</li>
-            </ul>
-            <p class="program-meta">5 visits in 8 applications</p>
-            <p class="program-note">recommended for simple lawn treatment</p>
-          </article>
-
-          <article class="program-card carousel-slide">
-            <div class="pill">BEST RESULTS</div>
-            <h3>PROGRAM 3</h3>
-            <ul>
-              <li>All Program 2 services</li>
-              <li>Eco Clear included</li>
-              <li>Priority visits</li>
-              <li>Full finish treatment</li>
-              <li>Crabgrass management included</li>
-            </ul>
-            <p class="program-meta">5 visits in 11 applications</p>
-            <p class="program-note">premium lawn care with maximum results</p>
-          </article>
-        </div>
-      </div>
-
-      <div class="dots" id="programDots" aria-hidden="true">
-        <button class="dot active" data-index="0"></button>
-        <button class="dot" data-index="1"></button>
-        <button class="dot" data-index="2"></button>
-      </div>
-    </section>
-
-    <section class="section">
-      <p class="section-subtitle section-subtitle-large">Additional Services</p>
-
-      <article class="service-card">
-        <div class="pill">#1 RECOMMENDATION</div>
-        <h3>AERATION</h3>
-        <ul>
-          <li>It is recommended that you Aerate your lawn, except sandy soil. This helps increase the penetration of both water and fertilizers to the root zone and reduce susceptibility to disease.</li>
-          <li>Aeration is not a one time fix, but rather part of a cultural lawn care practice your lawn benefits from over time.</li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <div class="pill">ALSO AVAILABLE IN PROGRAM 3</div>
-        <h3>ECO CLEAR</h3>
-        <ul>
-          <li>Used for driveway edges, sidewalk edges that grow grass or weeds.</li>
-          <li>Not for lawns.</li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <div class="pill">ALSO AVAILABLE IN PROGRAM 3</div>
-        <h3>CRABGRASS MANAGEMENT</h3>
-        <ul>
-          <li>Product that helps control germination of weeds, crabgrass, and wild grasses over time.</li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3>MICRONUTRIENTS</h3>
-        <ul>
-          <li>Soil conditioner. A chelated mixture containing necessary turf nutrients maximizing your lawn’s potential.</li>
-          <li>Great for stressed lawns in the summer.</li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3>LIMING</h3>
-        <ul>
-          <li>Soil conditioner. Helps balance acidic soils, stimulates microbial activity in soil.</li>
-          <li>Well paired with Program 2.</li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3>GRUB CONTROL</h3>
-        <ul>
-          <li>Protects roots from damage.</li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3>IRRIGATION BLOWOUT</h3>
-        <ul>
-          <li>Prevent water freezing inside the irrigation pipes before winter.</li>
-        </ul>
-      </article>
-    </section>
-
-    <section id="reviews" class="section reviews-section">
-      <h2 class="section-title">Reviews</h2>
-
-      <div class="review-tabs">
-        <button class="tab-btn active" data-tab="customersPanel">Customers</button>
-        <button class="tab-btn" data-tab="ownerPanel">Owner</button>
-      </div>
-
-      <button class="text-link button-reset" id="openReviewModalReviews">Leave your review →</button>
-
-      <div class="tab-panel active" id="customersPanel">
-        <div class="carousel review-carousel" id="customerCarousel">
-          <div class="carousel-track" id="customerTrack">
-            <article class="review-card carousel-slide">
-              <div class="review-stars">★ ★ ★ ★ ☆</div>
-              <div class="review-head">
-                <div class="avatar avatar-light">👤</div>
-                <h3>Valued Customer</h3>
-              </div>
-              <p>My lawn was thin and full of weeds. I tried fixing it myself but nothing held. After starting a program here, just 4 months later it filled in and now looks clean and consistent.</p>
-              <p class="muted">No photos provided</p>
-            </article>
-
-            <article class="review-card carousel-slide">
-              <div class="review-stars">★ ★ ★ ★ ★</div>
-              <div class="review-head">
-                <div class="avatar avatar-light">👤</div>
-                <h3>Valued Customer</h3>
-              </div>
-              <p>Seasonal treatments made a big difference. The lawn looked fuller, greener, and easier to maintain by mid summer.</p>
-              <button
-                class="text-link text-link-small button-reset gallery-trigger"
-                data-gallery='["https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1200&q=80"]'
-              >
-                View 2 Photos →
-              </button>
-            </article>
-          </div>
+        <!-- PROGRAM 1 -->
+        <div class="program-card">
+          <h3>Program 1</h3>
+          <ul>
+            <li>Spring fertilizer</li>
+            <li>Summer fertilizer</li>
+            <li>Fall/Winter fertilizer</li>
+            <li>Fiesta weed control &times;3</li>
+          </ul>
+          <div class="visits">4 visits in 6 applications</div>
+          <div class="note">Low commitment option</div>
         </div>
 
-        <div class="dots" id="customerDots" aria-hidden="true">
-          <button class="dot active" data-index="0"></button>
-          <button class="dot" data-index="1"></button>
-        </div>
-      </div>
-
-      <div class="tab-panel" id="ownerPanel">
-        <div class="carousel review-carousel" id="ownerCarousel">
-          <div class="carousel-track">
-            <article class="review-card carousel-slide">
-              <div class="review-head">
-                <div class="avatar avatar-green">SG</div>
-                <h3>Owner</h3>
-              </div>
-              <p>Crabgrass transformation in 6 month time frame.</p>
-              <button
-                class="text-link text-link-small button-reset gallery-trigger"
-                data-gallery='["https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"]'
-              >
-                View 2 Photos →
-              </button>
-            </article>
-
-            <article class="review-card carousel-slide">
-              <div class="review-head">
-                <div class="avatar avatar-green">SG</div>
-                <h3>Owner</h3>
-              </div>
-              <p>Improved density and colour after a full seasonal program and follow up care.</p>
-              <button
-                class="text-link text-link-small button-reset gallery-trigger"
-                data-gallery='["https://images.unsplash.com/photo-1599685315640-91f0c2a1f0d8?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1560743641-3914f2c45636?auto=format&fit=crop&w=1200&q=80"]'
-              >
-                View 2 Photos →
-              </button>
-            </article>
-          </div>
+        <!-- PROGRAM 2 -->
+        <div class="program-card">
+          <div class="badge">Most Common</div>
+          <h3>Program 2</h3>
+          <ul>
+            <li>Spring fertilizer</li>
+            <li>Early Summer fertilizer</li>
+            <li>Late Summer fertilizer</li>
+            <li>Fall/Winter fertilizer</li>
+            <li>Season long Fiesta weed control</li>
+            <li>Infestation checkups</li>
+          </ul>
+          <div class="visits">5 visits in 8 applications</div>
+          <div class="note">Recommended for simple lawn treatment</div>
         </div>
 
-        <div class="dots" id="ownerDots" aria-hidden="true">
-          <button class="dot active" data-index="0"></button>
-          <button class="dot" data-index="1"></button>
+        <!-- PROGRAM 3 -->
+        <div class="program-card">
+          <div class="badge badge-green">Best Results</div>
+          <h3>Program 3</h3>
+          <ul>
+            <li>All Program 2 services</li>
+            <li>Eco Clear included</li>
+            <li>Priority visits</li>
+            <li>Full finish treatment</li>
+            <li>Crabgrass management included</li>
+          </ul>
+          <div class="visits">5 visits in 11 applications</div>
+          <div class="note">Premium lawn care with maximum results</div>
         </div>
+
+      </div><!-- /programs-track -->
+    </div><!-- /carousel-track-wrap -->
+
+    <div class="carousel-dots" id="programs-dots">
+      <div class="dot active" data-i="0"></div>
+      <div class="dot"        data-i="1"></div>
+      <div class="dot"        data-i="2"></div>
+    </div>
+  </section>
+
+  <!-- ═══ ADDITIONAL SERVICES ══════════════════════════ -->
+  <section id="services">
+    <div class="section-title">Additional Services</div>
+
+    <div class="service-card">
+      <div class="service-badges">
+        <span class="badge">#1 Recommendation</span>
       </div>
-    </section>
+      <h3>Aeration</h3>
+      <p>Improves water and fertilizer penetration, reduces disease risk, and supports long term lawn health.</p>
+    </div>
 
-    <section class="section contact-section">
-      <h2 class="contact-title">Simply Green and Garden Spray</h2>
-      <p class="contact-subtitle">Mail or Phone for Inquiries</p>
-      <p class="contact-phone">Eddie Pavao · 905 858 1870</p>
-      <p class="contact-email">simplygreengardenspray@gmail.com</p>
-
-      <div class="contact-actions">
-        <a class="btn btn-primary" href="tel:9058581870">Call now</a>
-        <a class="btn btn-secondary" href="mailto:simplygreengardenspray@gmail.com">Email</a>
+    <div class="service-card">
+      <div class="service-badges">
+        <span class="badge badge-green">Also in Program 3</span>
       </div>
-    </section>
-  </main>
+      <h3>Eco Clear</h3>
+      <p>Used for driveway edges and sidewalks. Not intended for lawn application.</p>
+    </div>
 
-  <footer class="site-footer">
-    <p>© 2026 Simply Green and Garden Spray. All rights reserved.</p>
+    <div class="service-card">
+      <h3>Crabgrass Management</h3>
+      <p>Helps control germination of weeds, crabgrass, and wild grasses over time.</p>
+    </div>
+
+    <div class="service-card">
+      <h3>Micronutrients</h3>
+      <p>Soil conditioner that supports stressed lawns in summer and improves nutrient availability.</p>
+    </div>
+
+    <div class="service-card">
+      <h3>Liming</h3>
+      <p>Balances acidic soil, improves microbial activity, and pairs well with Program 2.</p>
+    </div>
+
+    <div class="service-card">
+      <h3>Grub Control</h3>
+      <p>Protects roots from below-ground damage caused by grubs.</p>
+    </div>
+
+    <div class="service-card">
+      <h3>Irrigation Blowout</h3>
+      <p>Prevents water from freezing in irrigation pipes before winter sets in.</p>
+    </div>
+  </section>
+
+  <!-- ═══ REVIEWS ═══════════════════════════════════════ -->
+  <section id="reviews">
+    <div class="section-title">Reviews</div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="customers" role="tab" aria-selected="true">Customers</button>
+      <button class="tab-btn"        data-tab="owner"     role="tab" aria-selected="false">Owner</button>
+    </div>
+
+    <div id="tab-customers" role="tabpanel">
+      <div class="reviews-carousel-wrap">
+        <div class="reviews-track" id="customer-track"></div>
+      </div>
+      <div class="review-counter" id="customer-counter"></div>
+    </div>
+
+    <div id="tab-owner" role="tabpanel" hidden>
+      <div class="reviews-carousel-wrap">
+        <div class="reviews-track" id="owner-track"></div>
+      </div>
+      <div class="review-counter" id="owner-counter"></div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══════════════════════════════════════ -->
+  <section id="contact">
+    <div class="section-title">Simply Green and Garden Spray</div>
+    <p class="contact-sub">Mail or Phone for Inquiries</p>
+    <div class="contact-info">
+      <p>&#128222; <a href="tel:+16471234567">(647) 123-4567</a></p>
+      <p>&#9993; <a href="mailto:hello@simplygreen.ca">hello@simplygreen.ca</a></p>
+    </div>
+    <div class="contact-btns">
+      <a class="btn btn-green"   href="tel:+16471234567">Call Now</a>
+      <a class="btn btn-outline" href="mailto:hello@simplygreen.ca">Email</a>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════ -->
+  <footer>
+    <p>&copy; 2025 Simply Green and Garden Spray. All rights reserved.</p>
+    <p>Serving the Greater Toronto Area</p>
   </footer>
 
-  <div class="modal-backdrop" id="reviewModal" hidden>
-    <div class="modal-card">
-      <button class="overlay-close modal-close" data-close-modal="reviewModal" aria-label="Close review form">×</button>
-      <h2 class="modal-title">Leave Your Review</h2>
-      <p class="modal-subtitle">We’d love to hear about your experience!</p>
+</div><!-- /site-wrapper -->
 
-      <form id="reviewForm" class="review-form">
-        <label class="field-label">Your Rating</label>
-        <div class="star-picker" id="starPicker">
-          <button type="button" class="star-btn" data-rating="1">★</button>
-          <button type="button" class="star-btn" data-rating="2">★</button>
-          <button type="button" class="star-btn" data-rating="3">★</button>
-          <button type="button" class="star-btn" data-rating="4">★</button>
-          <button type="button" class="star-btn" data-rating="5">★</button>
+<!-- ═══ REVIEW MODAL ══════════════════════════════════ -->
+<div class="modal-overlay" id="review-modal" role="dialog" aria-modal="true" aria-labelledby="review-modal-title">
+  <div class="modal-box">
+    <button class="modal-close" id="close-review-modal" aria-label="Close">&times;</button>
+
+    <div id="review-form-content">
+      <div class="modal-title" id="review-modal-title">Leave a Review</div>
+
+      <div class="form-group">
+        <label>Your rating <span class="req">*</span></label>
+        <div class="star-picker" id="star-picker">
+          <span class="sp-star" data-v="1">&#9733;</span>
+          <span class="sp-star" data-v="2">&#9733;</span>
+          <span class="sp-star" data-v="3">&#9733;</span>
+          <span class="sp-star" data-v="4">&#9733;</span>
+          <span class="sp-star" data-v="5">&#9733;</span>
         </div>
+        <div class="form-error" id="err-stars">Please select a rating.</div>
+      </div>
 
-        <label for="reviewEmail" class="field-label">Email Address</label>
-        <input id="reviewEmail" type="email" placeholder="your.email@example.com" required>
+      <div class="form-group">
+        <label for="rv-name">Name (First + last initial) <span class="req">*</span></label>
+        <input type="text" id="rv-name" placeholder="e.g. Sarah M." maxlength="40" autocomplete="off">
+        <div class="form-error" id="err-name">Please enter your name.</div>
+      </div>
 
-        <label for="reviewText" class="field-label">Your Review</label>
-        <textarea id="reviewText" rows="6" placeholder="Tell us about your experience with Simply Green and Garden Spray..." required></textarea>
+      <div class="form-group">
+        <label for="rv-text">Your review <span class="req">*</span></label>
+        <textarea id="rv-text" placeholder="Tell us about your experience..."></textarea>
+        <div class="form-error" id="err-text">Please write a review.</div>
+      </div>
 
-        <div class="modal-actions">
-          <button type="submit" class="btn btn-primary" id="submitReviewBtn" disabled>Submit Review</button>
-          <button type="button" class="btn btn-secondary" data-close-modal="reviewModal">Cancel</button>
-        </div>
-      </form>
+      <button class="btn btn-green btn-full" id="submit-review">Submit Review</button>
+    </div>
+
+    <div class="submit-success" id="review-success">
+      <div class="big-icon">&#127807;</div>
+      <p><strong>Thank you for your feedback!</strong><br>Your review will appear after moderation.</p>
     </div>
   </div>
+</div>
 
-  <div class="modal-backdrop gallery-backdrop" id="galleryModal" hidden>
-    <div class="gallery-wrap">
-      <button class="overlay-close gallery-close" data-close-modal="galleryModal" aria-label="Close gallery">×</button>
-
-      <div class="gallery-stage">
-        <img id="galleryImage" src="" alt="Gallery image">
-      </div>
-
-      <div class="gallery-meta">
-        <span id="galleryCounter">1 / 1</span>
-      </div>
-
-      <div class="gallery-dots" id="galleryDots"></div>
-
-      <div class="gallery-controls">
-        <button class="gallery-arrow" id="galleryPrev" aria-label="Previous image">‹</button>
-        <button class="gallery-arrow" id="galleryNext" aria-label="Next image">›</button>
-      </div>
+<!-- ═══ GALLERY MODAL ════════════════════════════════ -->
+<div class="modal-overlay" id="gallery-modal" role="dialog" aria-modal="true">
+  <div class="modal-box modal-box--dark">
+    <button class="modal-close modal-close--light" id="close-gallery-modal" aria-label="Close">&times;</button>
+    <div class="gallery-counter" id="gallery-counter">1 / 3</div>
+    <div class="gallery-img-wrap">
+      <div class="gallery-placeholder" id="gallery-placeholder">&#127807;</div>
+    </div>
+    <div class="gallery-dots-row" id="gallery-dots-row"></div>
+    <div class="gallery-nav">
+      <button class="gallery-btn" id="gallery-prev">&#8249;</button>
+      <button class="gallery-btn" id="gallery-next">&#8250;</button>
     </div>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
