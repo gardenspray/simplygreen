@@ -4,59 +4,92 @@
 
 'use strict';
 
-/* ─── DATA ──────────────────────────────────────────────────
-   customerReviews and ownerPosts are the source of truth.
-   Add real reviews here and they'll render automatically.
+/* ─── EMAILJS CONFIG ────────────────────────────────────────
+   Fill in your three values from emailjs.com.
+   Until you do, the form shows success but doesn't send.
    ─────────────────────────────────────────────────────────── */
+const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+
+if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════════════════════
+
+   HOW TO ADD A CUSTOMER REVIEW
+   ─────────────────────────────
+   When you get an email notification, copy the details and
+   add an object to customerReviews like this:
+
+   {
+     stars: 5,
+     name:  'Sarah M.',
+     text:  'Great service, lawn looks amazing!'
+   }
+
+   HOW TO ADD AN OWNER POST
+   ─────────────────────────
+   Add an object to ownerPosts. Each post has its own
+   photos array — put image paths/URLs directly on the post.
+   Leave photos as [] if the post has no photos.
+
+   {
+     text:   'Spring season is open for bookings!',
+     photos: [
+       'images/spring-2024-1.jpg',
+       'images/spring-2024-2.jpg'
+     ]
+   }
+
+   ═══════════════════════════════════════════════════════════ */
+
 const customerReviews = [
   {
     stars: 5,
     name:  'Jason M.',
-    text:  'Absolutely thrilled with the results! My lawn has never looked better going into summer. The team is professional, punctual, and clearly knows their stuff.',
-    photos: true
+    text:  'Absolutely thrilled with the results! My lawn has never looked better going into summer. The team is professional, punctual, and clearly knows their stuff.'
   },
   {
     stars: 5,
     name:  'Linda T.',
-    text:  'Switched from another company and couldn\'t be happier. The Program 2 package covers everything I need. My neighbours keep asking what I\'m doing differently!',
-    photos: false
+    text:  "Switched from another company and couldn't be happier. The Program 2 package covers everything I need. My neighbours keep asking what I'm doing differently!"
   },
   {
     stars: 5,
     name:  'Marcus B.',
-    text:  'The aeration service made a huge difference. Fertilizer is really getting in now. Highly recommend combining it with any program.',
-    photos: true
+    text:  'The aeration service made a huge difference. Fertilizer is really getting in now. Highly recommend combining it with any program.'
   },
   {
     stars: 4,
     name:  'Valued Customer',
-    text:  'Really happy with the treatment. Noticed a big improvement in the colour and density of the grass. Would love a bit more communication between visits but overall great service.',
-    photos: false
+    text:  'Really happy with the treatment. Noticed a big improvement in the colour and density of the grass. Would love a bit more communication between visits but overall great service.'
   },
   {
     stars: 5,
     name:  'Priya S.',
-    text:  'Program 3 was absolutely worth it. The crabgrass is completely under control and the priority visits give real peace of mind.',
-    photos: false
+    text:  'Program 3 was absolutely worth it. The crabgrass is completely under control and the priority visits give real peace of mind.'
   }
 ];
 
+/*
+  Each owner post has its OWN photos array.
+  - photos: []                       → no gallery link shown
+  - photos: ['img1.jpg','img2.jpg']  → "View photos →" opens that post's gallery
+*/
 const ownerPosts = [
   {
-    text:   'We\'re heading into peak season — all spring fertilizer applications are being scheduled now. Reach out early to lock in your spot before we fill up!',
-    photos: true
+    text:   "We're heading into peak season — all spring fertilizer applications are being scheduled now. Reach out early to lock in your spot before we fill up!",
+    photos: []   // e.g. ['images/spring1.jpg', 'images/spring2.jpg']
   },
   {
     text:   'Eco Clear is now available as a standalone service for driveway edges and sidewalks. Give us a call to add it to your next visit.',
-    photos: false
+    photos: []
   }
-];
-
-/* Gallery placeholder images — swap src values for real photos */
-const galleryImages = [
-  { src: null, emoji: '🌿' },
-  { src: null, emoji: '🌱' },
-  { src: null, emoji: '🍃' }
 ];
 
 
@@ -64,7 +97,6 @@ const galleryImages = [
    UTILITIES
    ═══════════════════════════════════════════════════════════ */
 
-/** Build gold-star HTML for a numeric rating */
 function starsHTML(rating, size) {
   size = size || 16;
   let html = '';
@@ -75,21 +107,74 @@ function starsHTML(rating, size) {
   return html;
 }
 
-/** Average star rating across all customer reviews */
 function calcAvgRating() {
   if (!customerReviews.length) return 0;
-  const sum = customerReviews.reduce(function (acc, r) { return acc + r.stars; }, 0);
-  return sum / customerReviews.length;
+  return customerReviews.reduce((a, r) => a + r.stars, 0) / customerReviews.length;
 }
 
-/** Update hero star display */
 function updateHeroStars() {
   const avg     = calcAvgRating();
   const rounded = Math.round(avg * 10) / 10;
-  document.getElementById('hero-stars').innerHTML        = starsHTML(avg, 22);
-  document.getElementById('hero-rating-num').textContent = rounded.toFixed(1);
+  document.getElementById('hero-stars').innerHTML          = starsHTML(avg, 22);
+  document.getElementById('hero-rating-num').textContent   = rounded.toFixed(1);
   document.getElementById('hero-review-count').textContent =
-    '(' + customerReviews.length + ' review' + (customerReviews.length !== 1 ? 's' : '') + ')';
+    `(${customerReviews.length} review${customerReviews.length !== 1 ? 's' : ''})`;
+}
+
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g,  '&amp;')
+    .replace(/</g,  '&lt;')
+    .replace(/>/g,  '&gt;')
+    .replace(/"/g,  '&quot;');
+}
+
+function starsText(n) {
+  return '★'.repeat(n) + '☆'.repeat(5 - n) + ` (${n}/5)`;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   DRAG-TO-SCROLL  (mouse1 click-and-drag on any carousel)
+   ═══════════════════════════════════════════════════════════ */
+function enableDragScroll(el) {
+  let isDown   = false;
+  let startX   = 0;
+  let scrollLeft = 0;
+
+  el.addEventListener('mousedown', (e) => {
+    isDown = true;
+    el.classList.add('dragging');
+    startX     = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft;
+    e.preventDefault();
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDown = false;
+    el.classList.remove('dragging');
+  });
+
+  el.addEventListener('mouseleave', () => {
+    isDown = false;
+    el.classList.remove('dragging');
+  });
+
+  el.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x    = e.pageX - el.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    el.scrollLeft = scrollLeft - walk;
+  });
+
+  /* Prevent click firing on child links after a drag */
+  el.addEventListener('click', (e) => {
+    if (Math.abs(el.scrollLeft - scrollLeft) > 4) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
 }
 
 
@@ -99,21 +184,20 @@ function updateHeroStars() {
 const hamburger  = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobile-menu');
 
-hamburger.addEventListener('click', function () {
+hamburger.addEventListener('click', () => {
   const isOpen = mobileMenu.classList.toggle('open');
   hamburger.classList.toggle('open', isOpen);
   hamburger.setAttribute('aria-expanded', String(isOpen));
 });
 
-document.querySelectorAll('.menu-link').forEach(function (link) {
-  link.addEventListener('click', function (e) {
+document.querySelectorAll('.menu-link').forEach(link => {
+  link.addEventListener('click', (e) => {
     e.preventDefault();
     const target = link.getAttribute('href');
-    // Close menu first, then scroll
     mobileMenu.classList.remove('open');
     hamburger.classList.remove('open');
     hamburger.setAttribute('aria-expanded', 'false');
-    setTimeout(function () {
+    setTimeout(() => {
       const el = document.querySelector(target);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }, 80);
@@ -127,17 +211,15 @@ document.querySelectorAll('.menu-link').forEach(function (link) {
 const progTrack = document.getElementById('programs-track');
 const progDots  = document.querySelectorAll('#programs-dots .dot');
 
-progTrack.addEventListener('scroll', function () {
+progTrack.addEventListener('scroll', () => {
   const cards     = progTrack.querySelectorAll('.program-card');
-  const cardWidth = cards[0].offsetWidth + 12; /* gap = 12px */
+  const cardWidth = cards[0].offsetWidth + 12;
   const idx       = Math.round(progTrack.scrollLeft / cardWidth);
-  progDots.forEach(function (d, i) {
-    d.classList.toggle('active', i === idx);
-  });
+  progDots.forEach((d, i) => d.classList.toggle('active', i === idx));
 });
 
-progDots.forEach(function (dot) {
-  dot.addEventListener('click', function () {
+progDots.forEach(dot => {
+  dot.addEventListener('click', () => {
     const i         = parseInt(dot.getAttribute('data-i'), 10);
     const cards     = progTrack.querySelectorAll('.program-card');
     const cardWidth = cards[0].offsetWidth + 12;
@@ -145,43 +227,32 @@ progDots.forEach(function (dot) {
   });
 });
 
+enableDragScroll(progTrack);
+
 
 /* ═══════════════════════════════════════════════════════════
-   REVIEW CAROUSEL — build cards + counter
+   BUILD REVIEW CARDS
    ═══════════════════════════════════════════════════════════ */
 
 function buildCustomerCards() {
   const track = document.getElementById('customer-track');
   track.innerHTML = '';
 
-  customerReviews.forEach(function (rv) {
+  customerReviews.forEach(rv => {
     const initials = rv.name.split(' ')
-      .map(function (w) { return w[0] || ''; })
-      .join('')
-      .slice(0, 2)
-      .toUpperCase();
+      .map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
 
     const card = document.createElement('div');
     card.className = 'review-card';
     card.innerHTML =
-      '<div class="rv-stars">' + starsHTML(rv.stars, 17) + '</div>' +
-      '<div class="rv-header">' +
-        '<div class="rv-avatar">' + initials + '</div>' +
-        '<div class="rv-name">'   + escapeHTML(rv.name) + '</div>' +
-      '</div>' +
-      '<div class="rv-text">' + escapeHTML(rv.text) + '</div>' +
-      (rv.photos
-        ? '<a class="rv-photos-link open-gallery" role="button" tabindex="0">View photos &rarr;</a>'
-        : '<div class="rv-no-photos">No photos attached</div>');
+      `<div class="rv-stars">${starsHTML(rv.stars, 17)}</div>` +
+      `<div class="rv-header">` +
+        `<div class="rv-avatar">${initials}</div>` +
+        `<div class="rv-name">${escapeHTML(rv.name)}</div>` +
+      `</div>` +
+      `<div class="rv-text">${escapeHTML(rv.text)}</div>`;
 
     track.appendChild(card);
-  });
-
-  track.querySelectorAll('.open-gallery').forEach(function (link) {
-    link.addEventListener('click', openGallery);
-    link.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') openGallery();
-    });
   });
 
   attachScrollCounter(track, 'customer-counter', 14);
@@ -191,33 +262,39 @@ function buildOwnerCards() {
   const track = document.getElementById('owner-track');
   track.innerHTML = '';
 
-  ownerPosts.forEach(function (post) {
+  ownerPosts.forEach((post, postIndex) => {
     const card = document.createElement('div');
     card.className = 'review-card';
+
+    const hasPhotos = Array.isArray(post.photos) && post.photos.length > 0;
+
     card.innerHTML =
-      '<div class="rv-header">' +
-        '<div class="rv-avatar owner-av">SG</div>' +
-        '<div>' +
-          '<div class="rv-name">Simply Green</div>' +
-          '<div class="rv-label">Owner</div>' +
-        '</div>' +
-      '</div>' +
-      '<div class="rv-text">' + escapeHTML(post.text) + '</div>' +
-      (post.photos
-        ? '<a class="rv-photos-link open-gallery" role="button" tabindex="0">View photos &rarr;</a>'
-        : '<div class="rv-no-photos">No photos attached</div>');
+      `<div class="rv-header">` +
+        `<div class="rv-avatar owner-av">SG</div>` +
+        `<div>` +
+          `<div class="rv-name">Simply Green</div>` +
+          `<div class="rv-label">Owner</div>` +
+        `</div>` +
+      `</div>` +
+      `<div class="rv-text">${escapeHTML(post.text)}</div>` +
+      (hasPhotos
+        ? `<a class="rv-photos-link open-gallery" data-post="${postIndex}" role="button" tabindex="0">View photos &rarr;</a>`
+        : '');
 
     track.appendChild(card);
   });
 
-  track.querySelectorAll('.open-gallery').forEach(function (link) {
-    link.addEventListener('click', openGallery);
+  /* Attach gallery openers with per-post photo set */
+  track.querySelectorAll('.open-gallery').forEach(link => {
+    link.addEventListener('click', () => {
+      const idx = parseInt(link.getAttribute('data-post'), 10);
+      openGallery(ownerPosts[idx].photos);
+    });
   });
 
   attachScrollCounter(track, 'owner-counter', 14);
 }
 
-/** Attach a scroll-based n/total counter to a review track */
 function attachScrollCounter(track, counterId, gap) {
   const counter = document.getElementById(counterId);
   const cards   = track.querySelectorAll('.review-card');
@@ -226,43 +303,33 @@ function attachScrollCounter(track, counterId, gap) {
   if (total <= 1) { counter.textContent = ''; return; }
 
   let current = 0;
-  counter.textContent = '1 / ' + total;
+  counter.textContent = `1 / ${total}`;
 
-  track.addEventListener('scroll', function () {
+  track.addEventListener('scroll', () => {
     if (!cards[0]) return;
     const cardWidth = cards[0].offsetWidth + gap;
     const idx = Math.round(track.scrollLeft / cardWidth);
     if (idx !== current) {
       current = idx;
-      counter.textContent = (idx + 1) + ' / ' + total;
+      counter.textContent = `${idx + 1} / ${total}`;
     }
   });
 }
 
-/** Basic HTML entity escaping to prevent XSS in user-submitted content */
-function escapeHTML(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
 
 /* ═══════════════════════════════════════════════════════════
-   TABS (Customers / Owner)
+   TABS
    ═══════════════════════════════════════════════════════════ */
-document.querySelectorAll('.tab-btn').forEach(function (btn) {
-  btn.addEventListener('click', function () {
-    document.querySelectorAll('.tab-btn').forEach(function (b) {
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => {
       b.classList.remove('active');
       b.setAttribute('aria-selected', 'false');
     });
     btn.classList.add('active');
     btn.setAttribute('aria-selected', 'true');
 
-    const tab = btn.getAttribute('data-tab');
-
+    const tab        = btn.getAttribute('data-tab');
     const custPanel  = document.getElementById('tab-customers');
     const ownerPanel = document.getElementById('tab-owner');
 
@@ -280,7 +347,7 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
 
 
 /* ═══════════════════════════════════════════════════════════
-   REVIEW MODAL
+   REVIEW MODAL + EMAILJS
    ═══════════════════════════════════════════════════════════ */
 const reviewModal = document.getElementById('review-modal');
 let selectedStars = 0;
@@ -295,101 +362,94 @@ function closeReviewModal() {
   document.body.style.overflow = '';
 }
 
-document.getElementById('open-review-modal').addEventListener('click',   openReviewModal);
-document.getElementById('close-review-modal').addEventListener('click',  closeReviewModal);
-
-/* Click outside modal box to close */
-reviewModal.addEventListener('click', function (e) {
-  if (e.target === reviewModal) closeReviewModal();
-});
-
-/* Keyboard: open with Enter/Space on the "Leave a review" link */
-document.getElementById('open-review-modal').addEventListener('keydown', function (e) {
+document.getElementById('open-review-modal').addEventListener('click',  openReviewModal);
+document.getElementById('close-review-modal').addEventListener('click', closeReviewModal);
+reviewModal.addEventListener('click', (e) => { if (e.target === reviewModal) closeReviewModal(); });
+document.getElementById('open-review-modal').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') openReviewModal();
 });
 
-/* ── Star picker ── */
+/* Star picker */
 const spStars = document.querySelectorAll('.sp-star');
 
-spStars.forEach(function (star) {
-  star.addEventListener('mouseover', function () {
+spStars.forEach(star => {
+  star.addEventListener('mouseover', () => {
     const v = parseInt(star.getAttribute('data-v'), 10);
-    spStars.forEach(function (s) {
-      s.classList.toggle('selected', parseInt(s.getAttribute('data-v'), 10) <= v);
-    });
+    spStars.forEach(s => s.classList.toggle('selected', parseInt(s.getAttribute('data-v'), 10) <= v));
   });
-
-  star.addEventListener('mouseleave', function () {
-    spStars.forEach(function (s) {
-      s.classList.toggle('selected', parseInt(s.getAttribute('data-v'), 10) <= selectedStars);
-    });
+  star.addEventListener('mouseleave', () => {
+    spStars.forEach(s => s.classList.toggle('selected', parseInt(s.getAttribute('data-v'), 10) <= selectedStars));
   });
-
-  star.addEventListener('click', function () {
+  star.addEventListener('click', () => {
     selectedStars = parseInt(star.getAttribute('data-v'), 10);
-    spStars.forEach(function (s) {
-      s.classList.toggle('selected', parseInt(s.getAttribute('data-v'), 10) <= selectedStars);
-    });
+    spStars.forEach(s => s.classList.toggle('selected', parseInt(s.getAttribute('data-v'), 10) <= selectedStars));
   });
 });
 
-/* ── Submit ── */
-document.getElementById('submit-review').addEventListener('click', function () {
-  /* Reset errors */
-  document.querySelectorAll('.form-error').forEach(function (e) {
-    e.style.display = 'none';
-  });
+/* Submit */
+document.getElementById('submit-review').addEventListener('click', () => {
+  document.querySelectorAll('.form-error').forEach(e => e.style.display = 'none');
 
   let valid = true;
-
-  if (!selectedStars) {
-    document.getElementById('err-stars').style.display = 'block';
-    valid = false;
-  }
-
+  if (!selectedStars)                                       { document.getElementById('err-stars').style.display = 'block'; valid = false; }
   const nameVal = document.getElementById('rv-name').value.trim();
-  if (!nameVal) {
-    document.getElementById('err-name').style.display = 'block';
-    valid = false;
-  }
-
+  if (!nameVal)                                             { document.getElementById('err-name').style.display  = 'block'; valid = false; }
   const textVal = document.getElementById('rv-text').value.trim();
-  if (!textVal) {
-    document.getElementById('err-text').style.display = 'block';
-    valid = false;
-  }
-
+  if (!textVal)                                             { document.getElementById('err-text').style.display  = 'block'; valid = false; }
   if (!valid) return;
 
-  /* Add review to in-memory data and rebuild UI */
-  customerReviews.push({ stars: selectedStars, name: nameVal, text: textVal, photos: false });
-  buildCustomerCards();
-  updateHeroStars();
+  const submitBtn         = document.getElementById('submit-review');
+  submitBtn.disabled      = true;
+  submitBtn.textContent   = 'Sending…';
 
-  /* Show success message */
-  document.getElementById('review-form-content').style.display = 'none';
-  document.getElementById('review-success').style.display      = 'block';
+  const templateParams = {
+    reviewer_name: nameVal,
+    stars:         starsText(selectedStars),
+    review_text:   textVal
+  };
 
-  /* Reset form and close after short delay */
-  setTimeout(function () {
-    document.getElementById('rv-name').value  = '';
-    document.getElementById('rv-text').value  = '';
-    selectedStars = 0;
-    spStars.forEach(function (s) { s.classList.remove('selected'); });
-    document.getElementById('review-form-content').style.display = 'block';
-    document.getElementById('review-success').style.display      = 'none';
-    closeReviewModal();
-  }, 2400);
+  const sendPromise = (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY')
+    ? emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+    : new Promise(resolve => setTimeout(resolve, 600));
+
+  sendPromise.then(() => {
+    document.getElementById('review-form-content').style.display = 'none';
+    document.getElementById('review-success').style.display      = 'block';
+
+    setTimeout(() => {
+      document.getElementById('rv-name').value = '';
+      document.getElementById('rv-text').value = '';
+      selectedStars = 0;
+      spStars.forEach(s => s.classList.remove('selected'));
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Submit Review';
+      document.getElementById('review-form-content').style.display = 'block';
+      document.getElementById('review-success').style.display      = 'none';
+      closeReviewModal();
+    }, 2600);
+
+  }).catch(err => {
+    console.error('EmailJS error:', err);
+    const errEl         = document.getElementById('err-submit');
+    errEl.textContent   = 'Something went wrong. Please try again.';
+    errEl.style.display = 'block';
+    submitBtn.disabled    = false;
+    submitBtn.textContent = 'Submit Review';
+  });
 });
 
 
 /* ═══════════════════════════════════════════════════════════
    GALLERY MODAL
+   Each owner post passes its own photos array into openGallery().
    ═══════════════════════════════════════════════════════════ */
 const galleryModal = document.getElementById('gallery-modal');
-let galleryIdx = 0;
+let galleryImages  = [];
+let galleryIdx     = 0;
 
-function openGallery() {
+function openGallery(photos) {
+  galleryImages = photos || [];
+  if (!galleryImages.length) return;
   galleryIdx = 0;
   renderGallery();
   galleryModal.classList.add('open');
@@ -402,68 +462,64 @@ function closeGallery() {
 }
 
 document.getElementById('close-gallery-modal').addEventListener('click', closeGallery);
-
-galleryModal.addEventListener('click', function (e) {
-  if (e.target === galleryModal) closeGallery();
-});
+galleryModal.addEventListener('click', (e) => { if (e.target === galleryModal) closeGallery(); });
 
 function renderGallery() {
-  const total  = galleryImages.length;
-  const img    = galleryImages[galleryIdx];
+  const total = galleryImages.length;
+  document.getElementById('gallery-counter').textContent = `${galleryIdx + 1} / ${total}`;
 
-  document.getElementById('gallery-counter').textContent = (galleryIdx + 1) + ' / ' + total;
+  const wrap = document.getElementById('gallery-img-wrap');
+  const src  = galleryImages[galleryIdx];
+  wrap.innerHTML = src
+    ? `<img src="${src}" alt="Gallery photo ${galleryIdx + 1}">`
+    : `<div class="gallery-placeholder">&#127807;</div>`;
 
-  /* Swap between real img tag and placeholder emoji */
-  const wrap = document.querySelector('.gallery-img-wrap');
-  wrap.innerHTML = img.src
-    ? '<img src="' + img.src + '" alt="Gallery photo ' + (galleryIdx + 1) + '">'
-    : '<div class="gallery-placeholder">' + img.emoji + '</div>';
-
-  /* Rebuild dots */
   const dotsRow = document.getElementById('gallery-dots-row');
   dotsRow.innerHTML = '';
-  galleryImages.forEach(function (_, i) {
+  galleryImages.forEach((_, i) => {
     const d = document.createElement('div');
     d.className = 'gallery-dot' + (i === galleryIdx ? ' active' : '');
     dotsRow.appendChild(d);
   });
 }
 
-document.getElementById('gallery-prev').addEventListener('click', function () {
+document.getElementById('gallery-prev').addEventListener('click', () => {
   galleryIdx = (galleryIdx - 1 + galleryImages.length) % galleryImages.length;
   renderGallery();
 });
 
-document.getElementById('gallery-next').addEventListener('click', function () {
+document.getElementById('gallery-next').addEventListener('click', () => {
   galleryIdx = (galleryIdx + 1) % galleryImages.length;
   renderGallery();
 });
 
-/* Keyboard arrow navigation in gallery */
-document.addEventListener('keydown', function (e) {
-  if (!galleryModal.classList.contains('open')) return;
-  if (e.key === 'ArrowRight') {
-    galleryIdx = (galleryIdx + 1) % galleryImages.length;
-    renderGallery();
-  } else if (e.key === 'ArrowLeft') {
-    galleryIdx = (galleryIdx - 1 + galleryImages.length) % galleryImages.length;
-    renderGallery();
-  } else if (e.key === 'Escape') {
-    closeGallery();
+document.addEventListener('keydown', (e) => {
+  if (galleryModal.classList.contains('open')) {
+    if      (e.key === 'ArrowRight') { galleryIdx = (galleryIdx + 1) % galleryImages.length; renderGallery(); }
+    else if (e.key === 'ArrowLeft')  { galleryIdx = (galleryIdx - 1 + galleryImages.length) % galleryImages.length; renderGallery(); }
+    else if (e.key === 'Escape')     { closeGallery(); }
+    return;
   }
-});
-
-/* Escape closes review modal too */
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape' && reviewModal.classList.contains('open')) {
-    closeReviewModal();
-  }
+  if (reviewModal.classList.contains('open') && e.key === 'Escape') closeReviewModal();
 });
 
 
 /* ═══════════════════════════════════════════════════════════
-   INIT — run on DOM ready
+   ENABLE DRAG SCROLL ON REVIEW TRACKS
+   (called after cards are built so the elements exist)
+   ═══════════════════════════════════════════════════════════ */
+function initReviewDrag() {
+  const ct = document.getElementById('customer-track');
+  const ot = document.getElementById('owner-track');
+  if (ct) enableDragScroll(ct);
+  if (ot) enableDragScroll(ot);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
    ═══════════════════════════════════════════════════════════ */
 updateHeroStars();
 buildCustomerCards();
 buildOwnerCards();
+initReviewDrag();
