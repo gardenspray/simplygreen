@@ -8,9 +8,9 @@
    Fill in your three values from emailjs.com.
    Until you do, the form shows success but doesn't send.
    ─────────────────────────────────────────────────────────── */
-const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
-const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+const EMAILJS_PUBLIC_KEY  = 'HvCOz4BRnHZyvtdGI';
+const EMAILJS_SERVICE_ID  = 'service_p4wpjoj';
+const EMAILJS_TEMPLATE_ID = 'template_kght31o';
 
 if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
