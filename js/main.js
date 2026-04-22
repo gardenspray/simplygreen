@@ -66,7 +66,7 @@ const customerReviews = [
   },
   {
     stars: 4,
-    name:  'Valued Customer',
+    name:  'John A.',
     text:  'Really happy with the treatment. Noticed a big improvement in the colour and density of the grass. Would love a bit more communication between visits but overall great service.'
   },
   {
@@ -83,11 +83,11 @@ const customerReviews = [
 */
 const ownerPosts = [
   {
-    text:   "We're heading into peak season — all spring fertilizer applications are being scheduled now. Reach out early to lock in your spot before we fill up!",
+    text:   "All spring fertilizer applications are being scheduled now.",
     photos: []   // e.g. ['images/spring1.jpg', 'images/spring2.jpg']
   },
   {
-    text:   'Eco Clear is now available as a standalone service for driveway edges and sidewalks. Give us a call to add it to your next visit.',
+    text:   'Featuring bad crab grass, 6 months later Vs the nieghbours lot',
     photos: []
   }
 ];
