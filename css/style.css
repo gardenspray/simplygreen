@@ -244,6 +244,13 @@ section { padding: 40px 20px; }
 
 .stars-display .review-count {
   font-size: 13px; color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.stars-display .review-count:hover {
+  color: var(--green);
+  text-decoration: underline;
 }
 
 @media (min-width: 700px) {
@@ -586,6 +593,11 @@ section { padding: 40px 20px; }
   text-align: center; margin-top: 14px;
   font-size: 13px; color: var(--text-muted);
   font-weight: 500; min-height: 20px;
+}
+
+
+@media (min-width: 700px) {
+  .review-counter { display: none; }
 }
 
 /* ─── CONTACT ───────────────────────────────────────────── */
