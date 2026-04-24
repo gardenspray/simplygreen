@@ -51,11 +51,6 @@ if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') 
 const customerReviews = [
   {
     stars: 5,
-    name:  'Jason M.',
-    text:  'Absolutely thrilled with the results! My lawn has never looked better going into summer. The team is professional, punctual, and clearly knows their stuff.'
-  },
-  {
-    stars: 5,
     name:  'Linda T.',
     text:  "Switched from another company and couldn't be happier. The Program 2 package covers everything I need. My neighbours keep asking what I'm doing differently!"
   },
@@ -67,12 +62,12 @@ const customerReviews = [
   {
     stars: 4,
     name:  'John A.',
-    text:  'Really happy with the treatment. Noticed a big improvement in the colour and density of the grass. Would love a bit more communication between visits but overall great service.'
+    text:  'Really happy with the treatment. Noticed a big improvement in the colour and density of the grass.'
   },
   {
     stars: 5,
     name:  'Priya S.',
-    text:  'Program 3 was absolutely worth it. The crabgrass is completely under control and the priority visits give real peace of mind.'
+    text:  'Program 3 was absolutely worth it. The crabgrass is completely under control and the visits give real peace of mind.'
   }
 ];
 
