@@ -113,7 +113,7 @@ function updateHeroStars() {
   document.getElementById('hero-stars').innerHTML          = starsHTML(avg, 22);
   document.getElementById('hero-rating-num').textContent   = rounded.toFixed(1);
   document.getElementById('hero-review-count').textContent =
-    `(${customerReviews.length} review${customerReviews.length !== 1 ? 's' : ''})`;
+    `Ratings (${customerReviews.length})`;
 }
 
 function escapeHTML(str) {
@@ -198,6 +198,17 @@ document.querySelectorAll('.menu-link').forEach(link => {
     }, 80);
   });
 });
+
+
+const heroReviewCount = document.getElementById('hero-review-count');
+
+if (heroReviewCount) {
+  heroReviewCount.addEventListener('click', (e) => {
+    e.preventDefault();
+    const reviewsSection = document.getElementById('reviews');
+    if (reviewsSection) reviewsSection.scrollIntoView({ behavior: 'smooth' });
+  });
+}
 
 
 /* ═══════════════════════════════════════════════════════════
